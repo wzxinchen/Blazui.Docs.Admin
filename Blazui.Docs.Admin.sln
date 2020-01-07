@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazAdmin.ServerRender", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazAdmin", "..\BlazAdmin\src\BlazAdmin\BlazAdmin.csproj", "{005AD1C5-1E36-49B4-A809-28AF6B0981FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazui.Docs.Admin.EFCore", "src\Blazui.Docs.Admin.EFCore\Blazui.Docs.Admin.EFCore.csproj", "{2883D282-EB1B-40DA-BA52-A076D6F8EC67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.EFCore", "src\Blazui.Docs.Admin.EFCore\Blazui.Docs.Admin.EFCore.csproj", "{2883D282-EB1B-40DA-BA52-A076D6F8EC67}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Component", "..\Blazui\src\Blazui.Component\Blazui.Component.csproj", "{D4705FAA-4D09-4131-8BB2-3F6B2F2E1ABC}"
 EndProject

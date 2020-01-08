@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using BlazAdmin;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -22,5 +23,15 @@ namespace Blazui.Docs.Admin.EFCore
             optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.UseNpgsql("Host=127.0.0.1;Port=5432;Username=postgres;Password=12345678;Database=blazui_docs");
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<RoleResource>()
+                .HasKey(x => new { x.RoleId, x.ResourceId });
+        }
+
+        public virtual DbSet<RoleResource> RoleResources { get; set; }
+        public virtual DbSet<IdentityResource> IdentityResources { get; set; }
     }
 }

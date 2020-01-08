@@ -3,15 +3,17 @@ using System;
 using Blazui.Docs.Admin.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Blazui.Docs.Admin.EFCore.Migrations
 {
     [DbContext(typeof(DocsDbContext))]
-    partial class DocsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200108075604_Resource")]
+    partial class Resource
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

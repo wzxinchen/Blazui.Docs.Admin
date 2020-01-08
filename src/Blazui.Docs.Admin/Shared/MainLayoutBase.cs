@@ -13,6 +13,7 @@ namespace Blazui.Docs.Admin.Shared
 
         protected override void OnInitialized()
         {
+            
             Menus.Add(new MenuModel()
             {
                 Label = "产品管理",

@@ -32,6 +32,5 @@ namespace Blazui.Docs.Admin.EFCore
         }
 
         public virtual DbSet<RoleResource> RoleResources { get; set; }
-        public virtual DbSet<IdentityResource> IdentityResources { get; set; }
     }
 }

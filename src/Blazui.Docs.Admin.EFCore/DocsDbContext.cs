@@ -1,4 +1,5 @@
 ﻿using BlazAdmin;
+using Blazui.Docs.Admin.Repository.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,5 +33,9 @@ namespace Blazui.Docs.Admin.EFCore
         }
 
         public virtual DbSet<RoleResource> RoleResources { get; set; }
+
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ProductVersion> ProductVersions { get; set; }
+        public virtual DbSet<VersionChange> VersionChanges { get; set; }
     }
 }

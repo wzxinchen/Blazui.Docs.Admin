@@ -1,0 +1,15 @@
+﻿@inherits ProductEditBase
+<BForm @ref="form" Value="ProductModel">
+    <BFormItem IsRequired="true" Name="@nameof(CreateProductModel.NugetPackageName)" Label="Nuget 包名" TValue="string">
+        <BInput TValue="string"></BInput>
+    </BFormItem>
+    <BFormItem IsRequired="true" Name="@nameof(CreateProductModel.GitHub)" Label="GitHub" TValue="string">
+        <BInput TValue="string"></BInput>
+    </BFormItem>
+    <BFormItem IsRequired="true" Name="@nameof(CreateProductModel.Description)" Label="简介" TValue="string">
+        <BInput TValue="string"></BInput>
+    </BFormItem>
+    <BFormActionItem Style="text-align:right">
+        <BButton Type="@ButtonType.Primary" OnClick="SubmitAsync">确认</BButton>
+    </BFormActionItem>
+</BForm>

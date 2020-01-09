@@ -18,7 +18,7 @@ namespace Blazui.Docs.Admin.Shared
             {
                 Label = "产品管理",
                 Icon = "el-icon-star-on",
-                Route = "products"
+                Route = "/products"
             });
             Menus.Add(new MenuModel()
             {

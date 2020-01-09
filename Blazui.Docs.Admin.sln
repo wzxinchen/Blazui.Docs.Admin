@@ -17,15 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.Repositor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Component", "..\Blazui\src\Blazui.Component\Blazui.Component.csproj", "{D4705FAA-4D09-4131-8BB2-3F6B2F2E1ABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazui.Docs.Admin.Repository.Model", "src\Blazui.Docs.Admin.Repository.Model\Blazui.Docs.Admin.Repository.Model.csproj", "{C42D9DB5-DEF6-41A9-8267-AA2C7005B4FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.Repository.Model", "src\Blazui.Docs.Admin.Repository.Model\Blazui.Docs.Admin.Repository.Model.csproj", "{C42D9DB5-DEF6-41A9-8267-AA2C7005B4FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazui.Docs.Admin.Enum", "src\Blazui.Docs.Admin.Enum\Blazui.Docs.Admin.Enum.csproj", "{D27801BC-93A0-4B05-B8C6-7B58BB327F8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.Enum", "src\Blazui.Docs.Admin.Enum\Blazui.Docs.Admin.Enum.csproj", "{D27801BC-93A0-4B05-B8C6-7B58BB327F8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazui.Docs.Admin.Service", "src\Blazui.Docs.Admin.Service\Blazui.Docs.Admin.Service.csproj", "{1DA20C38-5446-4061-9FFB-F7C59D55092D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.Service", "src\Blazui.Docs.Admin.Service\Blazui.Docs.Admin.Service.csproj", "{1DA20C38-5446-4061-9FFB-F7C59D55092D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazui.Docs.Admin.Model", "src\Blazui.Docs.Admin.Model\Blazui.Docs.Admin.Model.csproj", "{AF19D56B-5C99-41A0-8B7E-EFD2E8B569F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.Model", "src\Blazui.Docs.Admin.Model\Blazui.Docs.Admin.Model.csproj", "{AF19D56B-5C99-41A0-8B7E-EFD2E8B569F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazui.Docs.Admin.Repository", "src\Blazui.Docs.Admin.Repository\Blazui.Docs.Admin.Repository.csproj", "{6CA6EC6E-BE59-4377-A31E-8988E1DDFA95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.Repository", "src\Blazui.Docs.Admin.Repository\Blazui.Docs.Admin.Repository.csproj", "{6CA6EC6E-BE59-4377-A31E-8988E1DDFA95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,11 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NuGet.Common" Version="5.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blazui.Docs.Admin.Model\Blazui.Docs.Admin.Model.csproj" />
+    <ProjectReference Include="..\Blazui.Docs.Admin.Repository\Blazui.Docs.Admin.Repository.csproj" />
   </ItemGroup>
 
 </Project>

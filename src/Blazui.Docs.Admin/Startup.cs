@@ -14,6 +14,9 @@ using BlazAdmin.ServerRender;
 using Blazui.Docs.Admin.EFCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
+using Blazui.Docs.Admin.Service;
+using Blazui.Docs.Admin.Repository;
+using Blazui.Docs.Admin.Repository.EFCore;
 
 namespace Blazui.Docs.Admin
 {
@@ -35,7 +38,8 @@ namespace Blazui.Docs.Admin
                 options.UseNpgsql(Environment.GetEnvironmentVariable("DataBaseConnectionString"));
             });
             services.AddBlazAdmin<DocsDbContext>();
-            services.BuildServiceProvider().GetRequiredService<DocsDbContext>().Database.Migrate();
+            services.AddScoped<ProductService>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +68,7 @@ namespace Blazui.Docs.Admin
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+            app.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<DocsDbContext>().Database.Migrate();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Blazui.Docs.Admin.Shared
 
         protected override void OnInitialized()
         {
-            
+
             Menus.Add(new MenuModel()
             {
                 Label = "产品管理",
@@ -24,8 +24,16 @@ namespace Blazui.Docs.Admin.Shared
             {
                 Label = "文档管理",
                 Icon = "el-icon-document",
-                Route = "docs"
-            });
+                Children = new List<MenuModel>()
+                {
+                    new MenuModel(){
+                         Label="入门文档",
+                         Icon="el-icon-s-promotion",
+                         Route="/docs/quickstart"
+                    }
+                }
+            }); ;
+
         }
     }
 }

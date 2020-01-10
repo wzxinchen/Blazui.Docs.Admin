@@ -13,5 +13,6 @@ namespace Blazui.Docs.Admin.Repository.Model
         public DateTime PublishTime { get; set; }
 
         public virtual ICollection<VersionChange> VersionChanges { get; set; }
+        public virtual ICollection<QueryStartStep> QueryStartSteps { get; set; }
     }
 }

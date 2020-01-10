@@ -1,0 +1,24 @@
+﻿@inherits QuickStartsBase
+@attribute [Resource("QuickStartList", "入门文档列表")]
+@page "/docs/quickstart"
+
+<BAuthorizeView Roles="@Roles">
+    <BForm Inline="true">
+        <BFormItem TValue="int" Label="产品" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
+            <BSelect TValue="int">
+                @foreach (var product in Products)
+                {
+                    <BSelectOption @key="product.Id" Value="product.Id" Text="@product.NugetPackageName"></BSelectOption>
+                }
+            </BSelect>
+        </BFormItem>
+        <BFormItem TValue="int" Label="版本" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
+            <BSelect TValue="int">
+                @foreach (var product in Products)
+                {
+                    <BSelectOption @key="product.Id" Value="product.Id" Text="@product.NugetPackageName"></BSelectOption>
+                }
+            </BSelect>
+        </BFormItem>
+    </BForm>
+</BAuthorizeView>

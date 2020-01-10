@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Blazui.Docs.Admin.Repository.Model
 {
@@ -9,7 +10,6 @@ namespace Blazui.Docs.Admin.Repository.Model
         public string NugetPackageName { get; set; }
         public string Description { get; set; }
         public string GitHub { get; set; }
-        public string QuickStart { get; set; }
         public virtual ICollection<VersionChange> VersionChanges { get; set; }
     }
 }

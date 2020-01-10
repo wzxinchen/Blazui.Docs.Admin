@@ -9,6 +9,8 @@ namespace Blazui.Docs.Admin.Repository
         where T : class
     {
         Task CreateAsync(T t);
+        T QueryByKey(object key);
         List<T> QueryAll();
+        Task<int> DeleteAsync(object key);
     }
 }

@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blazui.Docs.Admin.Pages
+namespace Blazui.Docs.Admin.Pages.Product
 {
     public class ProductEditBase : BAdminPageBase
     {
         protected BForm form;
+        private bool isCreate;
+
         [Inject]
         private ProductService productService { get; set; }
 
@@ -23,6 +25,12 @@ namespace Blazui.Docs.Admin.Pages
         [Parameter]
         public DialogOption Dialog { get; set; }
 
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+            isCreate = ProductModel == null;
+        }
+
         protected async Task SubmitAsync()
         {
             if (!form.IsValid())
@@ -31,7 +39,14 @@ namespace Blazui.Docs.Admin.Pages
             }
             try
             {
-                await productService.CreateProductAsync(form.GetValue<CreateProductModel>());
+                if (isCreate)
+                {
+                    await productService.CreateProductAsync(form.GetValue<CreateProductModel>());
+                }
+                else
+                {
+                    await productService.UpdateProductAsync(form.GetValue<CreateProductModel>());
+                }
             }
             catch (OperationException oe)
             {

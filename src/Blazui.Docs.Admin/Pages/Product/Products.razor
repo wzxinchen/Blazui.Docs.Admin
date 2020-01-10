@@ -1,0 +1,39 @@
+﻿@inherits ProductsBase
+@page "/products"
+@attribute [Resource("productList", "产品列表")]
+<BAuthorizeView Roles="@Roles">
+    @if (CanCreate)
+    {
+        <BButtonGroup>
+            <BButton Type="@ButtonType.Primary" OnClick="CreateAsync">新增</BButton>
+        </BButtonGroup>
+    }
+    <BTable DataSource="products" HasSelectionColumn="false" @ref="table">
+        <BTableColumns>
+            @if (CanDelete || CanUpdateBasic || CanPublish)
+            {
+                <BTableTemplateColumn Text="操作" Context="product">
+                    <BDropDown>
+                        <Trigger>
+                            <BButton Size="ButtonSize.Mini" Icon="el-icon-arrow-down">更新产品</BButton>
+                        </Trigger>
+                        <Items>
+                            @if (CanUpdateBasic)
+                            {
+                                <BDropDownItem OnClick="e=>EditAsync(product)">基本信息</BDropDownItem>
+                            }
+                            @if (CanPublish)
+                            {
+                                <BDropDownItem OnClick="e=>PublishAsync(product)">发布</BDropDownItem>
+                            }
+                            @if (CanDelete)
+                            {
+                                <BDropDownItem OnClick="e=>DelAsync(product)">删除</BDropDownItem>
+                            }
+                        </Items>
+                    </BDropDown>
+                </BTableTemplateColumn>
+            }
+        </BTableColumns>
+    </BTable>
+</BAuthorizeView>

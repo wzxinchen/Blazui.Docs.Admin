@@ -9,5 +9,6 @@ namespace Blazui.Docs.Admin.Model
         public string NugetPackageName { get; set; }
         public string Description { get; set; }
         public string GitHub { get; set; }
+        public int Id { get; set; }
     }
 }

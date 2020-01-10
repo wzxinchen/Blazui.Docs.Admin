@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BlazAdmin.ServerRender\src\BlazAdmin.ServerRender\BlazAdmin.ServerRender.csproj" />
+    <ProjectReference Include="..\..\..\Blazui.Markdown\src\Blazui.Markdown\Blazui.Markdown.csproj" />
     <ProjectReference Include="..\Blazui.Docs.Admin.EFCore\Blazui.Docs.Admin.Repository.EFCore.csproj" />
     <ProjectReference Include="..\Blazui.Docs.Admin.Model\Blazui.Docs.Admin.Model.csproj" />
     <ProjectReference Include="..\Blazui.Docs.Admin.Service\Blazui.Docs.Admin.Service.csproj" />

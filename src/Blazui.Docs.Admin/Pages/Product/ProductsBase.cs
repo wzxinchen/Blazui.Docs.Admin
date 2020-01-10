@@ -1,4 +1,5 @@
 ﻿using BlazAdmin;
+using Blazui.Component;
 using Blazui.Component.Table;
 using Blazui.Docs.Admin.Enum;
 using Blazui.Docs.Admin.Model;
@@ -9,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blazui.Docs.Admin.Pages
+namespace Blazui.Docs.Admin.Pages.Product
 {
     public class ProductsBase : BAdminPageBase
     {
@@ -20,8 +21,6 @@ namespace Blazui.Docs.Admin.Pages
         protected bool CanCreate;
 
         protected bool CanUpdateBasic;
-
-        protected bool CanUpdateQuickStart;
         protected bool CanDelete;
 
         protected bool CanPublish;
@@ -32,7 +31,6 @@ namespace Blazui.Docs.Admin.Pages
             await base.OnInitializedAsync();
             CanCreate = IsCanAccessAny(DocsResource.CreateProduct.ToString());
             CanUpdateBasic = IsCanAccessAny(DocsResource.UpdateProductBasic.ToString());
-            CanUpdateQuickStart = IsCanAccessAny(DocsResource.UpdateProductQuickStart.ToString());
             CanDelete = IsCanAccessAny(DocsResource.DeleteProduct.ToString());
             CanPublish = IsCanAccessAny(DocsResource.PublishProduct.ToString());
         }
@@ -54,6 +52,7 @@ namespace Blazui.Docs.Admin.Pages
             {
                 Description = productModel.Description,
                 GitHub = productModel.GitHub,
+                Id = productModel.Id,
                 NugetPackageName = productModel.NugetPackageName
             });
             await DialogService.ShowDialogAsync<ProductEdit>("更新产品基本信息", parameters);
@@ -62,50 +61,36 @@ namespace Blazui.Docs.Admin.Pages
             RequireRender = true;
         }
 
-        protected async Task EditQuickStartAsync(object product)
-        {
-            var productModel = product as ProductModel;
-            var parameters = new Dictionary<string, object>();
-            parameters.Add(nameof(ProductEdit.ProductModel), new CreateProductModel()
-            {
-                Description = productModel.Description,
-                GitHub = productModel.GitHub,
-                NugetPackageName = productModel.NugetPackageName
-            });
-            await DialogService.ShowDialogAsync<ProductEdit>("更新产品基本信息", parameters);
-            products = productService.GetProducts();
-            table.MarkAsRequireRender();
-            RequireRender = true;
-        }
         protected async Task PublishAsync(object product)
         {
             var productModel = product as ProductModel;
             var parameters = new Dictionary<string, object>();
-            parameters.Add(nameof(ProductEdit.ProductModel), new CreateProductModel()
+            parameters.Add(nameof(ProductPublish.ProductId), productModel.Id);
+            await DialogService.ShowDialogAsync<ProductPublish>("发布新版本", 1000, parameters);
+            RefreshProducts();
+        }
+
+        private void RefreshProducts()
+        {
+            if (table == null)
             {
-                Description = productModel.Description,
-                GitHub = productModel.GitHub,
-                NugetPackageName = productModel.NugetPackageName
-            });
-            await DialogService.ShowDialogAsync<ProductEdit>("更新产品基本信息", parameters);
+                return;
+            }
             products = productService.GetProducts();
             table.MarkAsRequireRender();
             RequireRender = true;
         }
+
         protected async Task DelAsync(object product)
         {
-            var productModel = product as ProductModel;
-            var parameters = new Dictionary<string, object>();
-            parameters.Add(nameof(ProductEdit.ProductModel), new CreateProductModel()
+            var confirmResult = await ConfirmAsync("这将删除该产品的所有数据，确认删除？");
+            if (confirmResult != MessageBoxResult.Ok)
             {
-                Description = productModel.Description,
-                GitHub = productModel.GitHub,
-                NugetPackageName = productModel.NugetPackageName
-            });
-            await DialogService.ShowDialogAsync<ProductEdit>("更新产品基本信息", parameters);
-            products = productService.GetProducts();
-            table.MarkAsRequireRender();
-            RequireRender = true;
+                return;
+            }
+            var productModel = product as ProductModel;
+            await productService.DeleteProductsAsync(productModel.Id);
+            RefreshProducts();
         }
         protected async Task CreateAsync()
         {

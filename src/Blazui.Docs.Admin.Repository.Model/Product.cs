@@ -11,5 +11,6 @@ namespace Blazui.Docs.Admin.Repository.Model
         public string Description { get; set; }
         public string GitHub { get; set; }
         public virtual ICollection<VersionChange> VersionChanges { get; set; }
+        public virtual ICollection<Component> Components { get; set; }
     }
 }

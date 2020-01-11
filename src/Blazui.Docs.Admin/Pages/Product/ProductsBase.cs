@@ -15,6 +15,7 @@ namespace Blazui.Docs.Admin.Pages.Product
     public class ProductsBase : BAdminPageBase
     {
         internal BTable table;
+
         [Inject]
         private ProductService productService { get; set; }
 
@@ -92,6 +93,7 @@ namespace Blazui.Docs.Admin.Pages.Product
             await productService.DeleteProductsAsync(productModel.Id);
             RefreshProducts();
         }
+
         protected async Task CreateAsync()
         {
             await DialogService.ShowDialogAsync<ProductEdit>("创建产品基本信息");

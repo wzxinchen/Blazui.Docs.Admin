@@ -17,6 +17,10 @@ using Microsoft.EntityFrameworkCore;
 using Blazui.Docs.Admin.Service;
 using Blazui.Docs.Admin.Repository;
 using Blazui.Docs.Admin.Repository.EFCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Policy;
 
 namespace Blazui.Docs.Admin
 {
@@ -60,8 +64,8 @@ namespace Blazui.Docs.Admin
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

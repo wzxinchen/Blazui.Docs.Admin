@@ -7,5 +7,6 @@ namespace Blazui.Docs.Admin.Repository
     public interface IProductRepository : IBaseRepository<Product>
     {
         Task<int> UpdateAsync(Product product);
+        Task<Product> GetFullProductAsync(int id);
     }
 }

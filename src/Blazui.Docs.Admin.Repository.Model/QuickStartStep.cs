@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Blazui.Docs.Admin.Repository.Model
 {
-    public class QueryStartStep
+    public class QuickStartStep
     {
         public int Id { get; set; }
         public int ProductVersionId { get; set; }

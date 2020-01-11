@@ -37,5 +37,7 @@ namespace Blazui.Docs.Admin.EFCore
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductVersion> ProductVersions { get; set; }
         public virtual DbSet<VersionChange> VersionChanges { get; set; }
+        public virtual DbSet<Repository.Model.Component> Components { get; set; }
+        public virtual DbSet<ComponentParameter> ComponentParameters { get; set; }
     }
 }

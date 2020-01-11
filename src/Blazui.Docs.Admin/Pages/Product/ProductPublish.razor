@@ -1,12 +1,15 @@
 ﻿@inherits ProductPublisbBase
-<BForm>
-    <BFormItem Label="升级包" Name="@nameof(PublishVersionModel.FilePackage)" TValue="IFileModel">
-        <BUpload EnablePasteUpload="false" AllowExtensions="@(new []{".zip"})" Url="api/product/upload"></BUpload>
-    </BFormItem>
-    <BFormItem Label="更新日志" Name="@nameof(PublishVersionModel.ChangeLog)" TValue="string">
-        <BMarkdownEditor DisableFileUpload="true" Height="300" DisableImageUpload="true"></BMarkdownEditor>
-    </BFormItem>
-    <BFormActionItem Style="text-align:right">
-        <BButton Type="@ButtonType.Primary" OnClick="PublishAsync">发布</BButton>
-    </BFormActionItem>
-</BForm>
+    <BForm>
+        <BFormItem Label="版本号" Name="@nameof(PublishVersionModel.Version)" TValue="string" IsRequired="true">
+            <BInput TValue="string"></BInput>
+        </BFormItem>
+        <BFormItem Label="升级包" Name="@nameof(PublishVersionModel.FilePackage)" TValue="IFileModel" IsRequired="true">
+            <BUpload EnablePasteUpload="false" AllowExtensions="@(new []{".zip"})" Url="api/product/upload"></BUpload>
+        </BFormItem>
+        <BFormItem Label="更新日志" Name="@nameof(PublishVersionModel.ChangeLog)" TValue="string" IsRequired="true">
+            <BMarkdownEditor DisableFileUpload="true" Height="300" DisableImageUpload="true"></BMarkdownEditor>
+        </BFormItem>
+        <BFormActionItem Style="text-align:right">
+            <BButton Type="@ButtonType.Primary" OnClick="PublishAsync">发布</BButton>
+        </BFormActionItem>
+    </BForm>

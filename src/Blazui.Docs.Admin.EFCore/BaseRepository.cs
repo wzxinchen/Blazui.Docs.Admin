@@ -50,5 +50,10 @@ namespace Blazui.Docs.Admin.Repository.EFCore
         {
             return DbContext.Set<T>().Find(key);
         }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return DbContext.SaveChangesAsync();
+        }
     }
 }

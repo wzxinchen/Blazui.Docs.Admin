@@ -12,5 +12,6 @@ namespace Blazui.Docs.Admin.Repository
         T QueryByKey(object key);
         List<T> QueryAll();
         Task<int> DeleteAsync(object key);
+        Task<int> SaveChangesAsync();
     }
 }

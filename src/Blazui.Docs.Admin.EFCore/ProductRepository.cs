@@ -21,5 +21,15 @@ namespace Blazui.Docs.Admin.Repository.EFCore
             existsProduct.Description = product.Description;
             return await DbContext.SaveChangesAsync();
         }
+
+        public Task<Product> GetFullProductAsync(int id)
+        {
+            return Query.Include(x => x.ProductVersions)
+                .ThenInclude(x => x.Components)
+                .ThenInclude(x => x.ComponentParameters)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+
+        }
     }
 }

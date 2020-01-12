@@ -47,6 +47,11 @@ namespace Blazui.Docs.Admin.Service
             }).ToList();
         }
 
+        public void GetProductVersionsAsync(int productId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task UpdateChangeLogAsync(int productId, string version, string changeLog)
         {
             var product = productRepository.GetProductWithVersion(productId);

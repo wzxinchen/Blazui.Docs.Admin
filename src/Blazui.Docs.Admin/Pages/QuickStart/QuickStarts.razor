@@ -5,7 +5,7 @@
 <BAuthorizeView Roles="@Roles">
     <BForm Inline="true">
         <BFormItem TValue="int" Label="产品" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
-            <BSelect TValue="int">
+            <BSelect TValue="int" OnChange="ProductSelectedAsync">
                 @foreach (var product in Products)
                 {
                     <BSelectOption @key="product.Id" Value="product.Id" Text="@product.NugetPackageName"></BSelectOption>
@@ -14,9 +14,9 @@
         </BFormItem>
         <BFormItem TValue="int" Label="版本" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
             <BSelect TValue="int">
-                @foreach (var product in Products)
+                @foreach (var verion in Versions)
                 {
-                    <BSelectOption @key="product.Id" Value="product.Id" Text="@product.NugetPackageName"></BSelectOption>
+                    <BSelectOption @key="verion.Key" Value="verion.Key" Text="@verion.Value"></BSelectOption>
                 }
             </BSelect>
         </BFormItem>

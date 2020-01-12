@@ -55,5 +55,10 @@ namespace Blazui.Docs.Admin.Pages.QuickStart
                 Id = x.Id
             }).ToList();
         }
+
+        protected async Task CreateAsync()
+        {
+
+        }
     }
 }

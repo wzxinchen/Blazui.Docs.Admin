@@ -22,7 +22,7 @@
         </BFormItem>
         <BFormActionItem>
             <BButton Type="@ButtonType.Primary" OnClick="Query">查询</BButton>
-            <BButton Type="@ButtonType.Primary" OnClick="Query" IsDisabled="!CanCreate">新建</BButton>
+            <BButton Type="@ButtonType.Primary" OnClick="CreateAsync" IsDisabled="!CanCreate">新建</BButton>
         </BFormActionItem>
     </BForm>
     <BTable DataSource="Steps">

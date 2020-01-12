@@ -1,7 +1,9 @@
 ﻿using BlazAdmin;
 using Blazui.Component.EventArgs;
 using Blazui.Component.Select;
+using Blazui.Docs.Admin.Enum;
 using Blazui.Docs.Admin.Model;
+using Blazui.Docs.Admin.Repository.Model;
 using Blazui.Docs.Admin.Service;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -14,10 +16,22 @@ namespace Blazui.Docs.Admin.Pages.QuickStart
     public class QuickStartsBase : BAdminPageBase
     {
         internal List<ProductModel> Products;
-        internal IDictionary<int, string> Versions;
+        internal int SelectedVersionId;
+        private List<ProductVersion> productVersions;
+        internal IDictionary<int, string> Versions = new Dictionary<int, string>();
+        protected List<QuickStartStepModel> Steps = new List<QuickStartStepModel>();
 
         [Inject]
         private ProductService ProductService { get; set; }
+        protected bool CanUpdate { get; private set; }
+        protected bool CanCreate { get; private set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+            CanUpdate = IsCanAccessAny(DocsResource.UpdateProductQuickStart.ToString());
+            CanCreate = IsCanAccessAny(DocsResource.CreateProductQuickStart.ToString());
+        }
 
         protected override void OnInitialized()
         {
@@ -25,10 +39,21 @@ namespace Blazui.Docs.Admin.Pages.QuickStart
             Products = ProductService.GetProducts();
         }
 
-        protected async Task ProductSelectedAsync(BChangeEventArgs<BSelectOptionBase<int>> arg)
+        protected void ProductSelected(BChangeEventArgs<BSelectOptionBase<int>> arg)
         {
-            ProductService.GetProductVersionsAsync(arg.NewValue.Value);
-            Versions = Products.FirstOrDefault(x => x.Id == arg.NewValue.Value);
+            productVersions = ProductService.GetProductVersions(arg.NewValue.Value);
+            Versions = productVersions.ToDictionary(x => x.Id, x => x.Version);
+        }
+
+        protected void Query()
+        {
+            var productVersion = productVersions.FirstOrDefault(x => x.Id == SelectedVersionId);
+            Steps = ProductService.GetProductQuickStartSteps(productVersion.Id).Select(x => new QuickStartStepModel()
+            {
+                Description = x.Description,
+                Title = x.Title,
+                Id = x.Id
+            }).ToList();
         }
     }
 }

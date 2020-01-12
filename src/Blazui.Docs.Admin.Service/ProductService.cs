@@ -22,10 +22,12 @@ namespace Blazui.Docs.Admin.Service
     public class ProductService
     {
         private readonly IProductRepository productRepository;
+        private readonly IQuickStartStepRepository quickStartStepRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IQuickStartStepRepository quickStartStepRepository)
         {
             this.productRepository = productRepository;
+            this.quickStartStepRepository = quickStartStepRepository;
         }
         public List<ProductModel> GetProducts()
         {
@@ -41,15 +43,20 @@ namespace Blazui.Docs.Admin.Service
                 };
                 var latestVersion = x.ProductVersions.OrderByDescending(x => x.PublishTime).FirstOrDefault();
                 productModel.Version = latestVersion?.Version;
-                productModel.PublishDate = latestVersion.PublishTime;
+                productModel.PublishDate = latestVersion?.PublishTime;
                 productModel.ChangeLog = latestVersion?.ChangeLog;
                 return productModel;
             }).ToList();
         }
 
-        public void GetProductVersionsAsync(int productId)
+        public List<ProductVersion> GetProductVersions(int productId)
         {
-            throw new NotImplementedException();
+            return productRepository.GetProductWithVersion(productId).ProductVersions.ToList();
+        }
+
+        public List<QuickStartStep> GetProductQuickStartSteps(int productVersionId)
+        {
+            return quickStartStepRepository.GetSteps(productVersionId);
         }
 
         public Task UpdateChangeLogAsync(int productId, string version, string changeLog)

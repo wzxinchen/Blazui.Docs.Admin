@@ -48,6 +48,7 @@ namespace Blazui.Docs.Admin
             services.AddBlazAdmin<DocsDbContext>();
             services.AddScoped<ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IQuickStartStepRepository, QuickStartStepRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

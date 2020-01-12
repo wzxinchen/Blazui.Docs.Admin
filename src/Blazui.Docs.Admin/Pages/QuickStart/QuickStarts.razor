@@ -5,7 +5,7 @@
 <BAuthorizeView Roles="@Roles">
     <BForm Inline="true">
         <BFormItem TValue="int" Label="产品" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
-            <BSelect TValue="int" OnChange="ProductSelectedAsync">
+            <BSelect TValue="int" OnChange="ProductSelected">
                 @foreach (var product in Products)
                 {
                     <BSelectOption @key="product.Id" Value="product.Id" Text="@product.NugetPackageName"></BSelectOption>
@@ -13,12 +13,29 @@
             </BSelect>
         </BFormItem>
         <BFormItem TValue="int" Label="版本" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
-            <BSelect TValue="int">
+            <BSelect TValue="int" @bind-Value="SelectedVersionId">
                 @foreach (var verion in Versions)
                 {
                     <BSelectOption @key="verion.Key" Value="verion.Key" Text="@verion.Value"></BSelectOption>
                 }
             </BSelect>
         </BFormItem>
+        <BFormActionItem>
+            <BButton Type="@ButtonType.Primary" OnClick="Query">查询</BButton>
+            <BButton Type="@ButtonType.Primary" OnClick="Query" IsDisabled="!CanCreate">新建</BButton>
+        </BFormActionItem>
     </BForm>
+    <BTable DataSource="Steps">
+        <BTableColumns>
+            @if (CanUpdate)
+            {
+                <BTableTemplateColumn Context="step" Text="操作">
+                    <BButton Icon="el-icon-arrow-up"></BButton>
+                    <BButton Icon="el-icon-arrow-down"></BButton>
+                    <BButton Icon="el-icon-edit"></BButton>
+                    <BButton Icon="el-icon-delete"></BButton>
+                </BTableTemplateColumn>
+            }
+        </BTableColumns>
+    </BTable>
 </BAuthorizeView>

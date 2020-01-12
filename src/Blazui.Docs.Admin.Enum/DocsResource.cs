@@ -18,6 +18,9 @@ namespace Blazui.Docs.Admin.Enum
         [Description("更新产品入门信息")]
         UpdateProductQuickStart,
 
+        [Description("创建产品入门信息")]
+        CreateProductQuickStart,
+
         [Description("删除产品")]
         DeleteProduct,
 

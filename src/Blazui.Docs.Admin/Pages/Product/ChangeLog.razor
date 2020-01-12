@@ -1,0 +1,20 @@
+﻿@inherits ChangeLogBase
+<BAuthorizeView Roles="@Roles">
+    <BForm>
+        <BFormItem TValue="string">
+            <BMarkdownEditor @bind-Value="@Product.ChangeLog"></BMarkdownEditor>
+        </BFormItem>
+        <BFormActionItem Style="text-align:right">
+            <BButton Type="@ButtonType.Primary" IsDisabled="!CanUpdate" OnClick="SaveChangeLogAsync">
+                @if (CanUpdate)
+                {
+                    @("保存");
+                }
+                else
+                {
+                    @("无权更新");
+                }
+            </BButton>
+        </BFormActionItem>
+    </BForm>
+</BAuthorizeView>

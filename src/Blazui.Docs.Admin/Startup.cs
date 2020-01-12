@@ -37,6 +37,10 @@ namespace Blazui.Docs.Admin
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DataBaseConnectionString")))
+            {
+                return;
+            }
             services.AddDbContext<DocsDbContext>(options =>
             {
                 options.UseNpgsql(Environment.GetEnvironmentVariable("DataBaseConnectionString"));

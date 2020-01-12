@@ -10,6 +10,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Xml;
@@ -27,52 +29,75 @@ namespace Blazui.Docs.Admin.Service
         }
         public List<ProductModel> GetProducts()
         {
-            var products = productRepository.QueryAll();
-            return products.Select(x => new ProductModel()
+            var products = productRepository.GetProductsWithVersion();
+            return products.Select(x =>
             {
-                Description = x.Description,
-                GitHub = x.GitHub,
-                Id = x.Id,
-                NugetPackageName = x.NugetPackageName
+                var productModel = new ProductModel()
+                {
+                    Description = x.Description,
+                    GitHub = x.GitHub,
+                    Id = x.Id,
+                    NugetPackageName = x.NugetPackageName
+                };
+                var latestVersion = x.ProductVersions.OrderByDescending(x => x.PublishTime).FirstOrDefault();
+                productModel.Version = latestVersion?.Version;
+                productModel.PublishDate = latestVersion.PublishTime;
+                productModel.ChangeLog = latestVersion?.ChangeLog;
+                return productModel;
             }).ToList();
+        }
+
+        public Task UpdateChangeLogAsync(int productId, string version, string changeLog)
+        {
+            var product = productRepository.GetProductWithVersion(productId);
+            var productVersion = product.ProductVersions.FirstOrDefault(x => x.Version == version);
+            if (productVersion == null)
+            {
+                throw new OperationException($"当前版本【{changeLog}】不存在");
+            }
+            productVersion.ChangeLog = changeLog;
+            return productRepository.SaveChangesAsync();
         }
 
         public async Task PublishAsync(PublishVersionModel versionModel)
         {
-            var folder = Path.GetRandomFileName();
-            var directory = Path.Combine(AppContext.BaseDirectory, folder);
-            Directory.CreateDirectory(directory);
-            ZipFile.ExtractToDirectory(versionModel.FilePackage.Id, directory);
-            var subDirectories = Directory.GetDirectories(directory);
-            var product = await productRepository.GetFullProductAsync(versionModel.ProductId);
-            if (product == null)
+            try
             {
-                throw new OperationException("当前产品不存在，产品ID为：" + versionModel.ProductId);
-            }
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                var productVersion = await InitilizeVersionAsync(product, versionModel.Version);
-                var packageDirectory = subDirectories.FirstOrDefault(x => Path.GetFileName(x) == "package");
-                if (string.IsNullOrWhiteSpace(packageDirectory))
+                var folder = Path.GetRandomFileName();
+                var directory = Path.Combine(AppContext.BaseDirectory, folder);
+                Directory.CreateDirectory(directory);
+                ZipFile.ExtractToDirectory(versionModel.FilePackage.FirstOrDefault().Id, directory);
+                var subDirectories = Directory.GetDirectories(directory);
+                var product = await productRepository.GetFullProductAsync(versionModel.ProductId);
+                if (product == null)
                 {
-                    throw new OperationException("程序包未找到，目录名为 package");
+                    throw new OperationException("当前产品不存在，产品ID为：" + versionModel.ProductId);
                 }
-                var files = Directory.GetFiles(packageDirectory, "*.dll");
-                InitilizeAssemblies(productVersion, files);
-                scope.Complete();
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    var productVersion = await InitilizeVersionAsync(product, versionModel);
+                    var files = Directory.GetFiles(directory, "*.dll");
+                    InitilizeAssemblies(productVersion, files);
+                    await productRepository.SaveChangesAsync();
+                    scope.Complete();
+                }
+            }
+            finally
+            {
+                File.Delete(versionModel.FilePackage[0].Id);
             }
         }
 
-        private async Task<ProductVersion> InitilizeVersionAsync(Product product, string changeLog)
+        private async Task<ProductVersion> InitilizeVersionAsync(Product product, PublishVersionModel versionModel)
         {
-            var version = changeLog.Replace(".changelog", string.Empty);
-            var productVersion = product.ProductVersions.FirstOrDefault(x => x.Version.Equals(version, StringComparison.CurrentCultureIgnoreCase));
+            var productVersion = product.ProductVersions.FirstOrDefault(x => x.Version.Equals(versionModel.Version, StringComparison.CurrentCultureIgnoreCase));
             if (productVersion == null)
             {
                 productVersion = new Repository.Model.ProductVersion()
                 {
                     PublishTime = DateTime.Now,
-                    Version = version
+                    Version = versionModel.Version,
+                    ChangeLog = versionModel.ChangeLog
                 };
                 product.ProductVersions.Add(productVersion);
                 productVersion.Components.Clear();
@@ -92,6 +117,7 @@ namespace Blazui.Docs.Admin.Service
                         Title = x.Title
                     }).ToList();
                 }
+                productVersion.ChangeLog = versionModel.ChangeLog;
                 await productRepository.SaveChangesAsync();
             }
 
@@ -108,21 +134,28 @@ namespace Blazui.Docs.Admin.Service
                 doc.Load(xmlFile);
                 var members = doc.SelectNodes("/doc/members/member")
                     .OfType<XmlNode>()
-                    .ToDictionary(x => x.Attributes["name"].Value, x => x.SelectSingleNode("summary").Value);
+                    .ToDictionary(x => x.Attributes["name"].Value, x => x.SelectSingleNode("summary").InnerText?.Trim());
                 var componentTypes = Assembly.LoadFile(file).GetExportedTypes().Where(x => x.IsPublic)
                     .Where(x => typeof(ComponentBase).IsAssignableFrom(x))
                     .Where(x => x != typeof(ComponentBase))
                     .ToList();
                 foreach (var componentType in componentTypes)
                 {
-                    var componentName = GetClassSummary(members, componentType.FullName);
+                    var componentName = GetClassSummary(members, componentType);
+                    var tagName = Regex.Replace(componentType.Name, @"\`\d+", string.Empty);
                     var component = new Repository.Model.Component()
                     {
-                        Name = componentName,
-                        TagName = componentType.Name,
+                        Name = componentName ?? tagName,
+                        TagName = tagName,
                         ProductVersionId = productVersion.Id
                     };
-
+                    if (componentType.IsGenericType)
+                    {
+                        component.ComponentGenericParameters = componentType.GetGenericArguments().Select(x => new ComponentGenericParameter()
+                        {
+                            Name = Regex.Replace(x.Name, @"\`\d+", string.Empty)
+                        }).ToList();
+                    }
                     productVersion.Components.Add(component);
                     InitilizeParameters(componentType, component, members);
                 }
@@ -136,10 +169,41 @@ namespace Blazui.Docs.Admin.Service
             return value;
         }
 
-        string GetClassSummary(IDictionary<string, string> members, string className)
+        string GetClassSummary(IDictionary<string, string> members, Type type)
         {
-            members.TryGetValue($"T:{className}", out var value);
+            members.TryGetValue($"T:{type.FullName}", out var value);
             return value;
+        }
+
+        private string GetFriendlyTypeName(Type type)
+        {
+            if (type.IsGenericParameter)
+            {
+                return type.Name;
+            }
+
+            if (!type.IsGenericType)
+            {
+                return type.FullName;
+            }
+
+            var builder = new StringBuilder();
+            var name = type.Name;
+            var index = name.IndexOf("`");
+            builder.AppendFormat("{0}.{1}", type.Namespace, name.Substring(0, index));
+            builder.Append('<');
+            var first = true;
+            foreach (var arg in type.GetGenericArguments())
+            {
+                if (!first)
+                {
+                    builder.Append(',');
+                }
+                builder.Append(GetFriendlyTypeName(arg));
+                first = false;
+            }
+            builder.Append('>');
+            return builder.ToString();
         }
 
         private void InitilizeParameters(Type componentType, Repository.Model.Component component, IDictionary<string, string> members)

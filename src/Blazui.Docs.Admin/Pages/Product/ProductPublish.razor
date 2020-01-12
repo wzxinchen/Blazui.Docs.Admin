@@ -1,9 +1,9 @@
-﻿@inherits ProductPublisbBase
-    <BForm>
+﻿@inherits ProductPublishBase
+    <BForm @ref="form">
         <BFormItem Label="版本号" Name="@nameof(PublishVersionModel.Version)" TValue="string" IsRequired="true">
             <BInput TValue="string"></BInput>
         </BFormItem>
-        <BFormItem Label="升级包" Name="@nameof(PublishVersionModel.FilePackage)" TValue="IFileModel" IsRequired="true">
+        <BFormItem Label="升级包" Name="@nameof(PublishVersionModel.FilePackage)" TValue="IFileModel[]" IsRequired="true">
             <BUpload EnablePasteUpload="false" AllowExtensions="@(new []{".zip"})" Url="api/product/upload"></BUpload>
         </BFormItem>
         <BFormItem Label="更新日志" Name="@nameof(PublishVersionModel.ChangeLog)" TValue="string" IsRequired="true">

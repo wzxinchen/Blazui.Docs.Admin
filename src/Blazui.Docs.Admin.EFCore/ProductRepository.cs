@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +31,17 @@ namespace Blazui.Docs.Admin.Repository.EFCore
                 .FirstOrDefaultAsync(x => x.Id == id);
 
 
+        }
+
+        public List<Product> GetProductsWithVersion()
+        {
+            return Query.Include(x => x.ProductVersions).ToList();
+        }
+
+        public Product GetProductWithVersion(int id)
+        {
+            return Query.Include(x => x.ProductVersions)
+                .FirstOrDefault(x => x.Id == id);
         }
     }
 }

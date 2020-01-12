@@ -17,11 +17,11 @@ namespace Blazui.Docs.Admin.EFCore
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.EnableSensitiveDataLogging();
             if (optionsBuilder.IsConfigured)
             {
                 return;
             }
-            optionsBuilder.EnableSensitiveDataLogging();
             optionsBuilder.UseNpgsql("Host=127.0.0.1;Port=5432;Username=postgres;Password=12345678;Database=blazui_docs");
         }
 

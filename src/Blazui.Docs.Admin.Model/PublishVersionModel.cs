@@ -9,7 +9,7 @@ namespace Blazui.Docs.Admin.Model
     {
         public int ProductId { get; set; }
         public string ChangeLog { get; set; }
-        public IFileModel FilePackage { get; set; }
+        public IFileModel[] FilePackage { get; set; }
         public string Version { get; set; }
     }
 }

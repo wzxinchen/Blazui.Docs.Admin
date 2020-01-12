@@ -94,6 +94,15 @@ namespace Blazui.Docs.Admin.Pages.Product
             RefreshProducts();
         }
 
+        protected async Task EditChangeLogAsync(object product)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add(nameof(ChangeLog.Product), product);
+            await DialogService.ShowDialogAsync<ChangeLog>("更新日志", 800, parameters);
+            RefreshProducts();
+        }
+
+
         protected async Task CreateAsync()
         {
             await DialogService.ShowDialogAsync<ProductEdit>("创建产品基本信息");

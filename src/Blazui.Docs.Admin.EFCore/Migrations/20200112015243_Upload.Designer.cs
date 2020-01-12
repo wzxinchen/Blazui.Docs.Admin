@@ -3,15 +3,17 @@ using System;
 using Blazui.Docs.Admin.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Blazui.Docs.Admin.EFCore.Migrations
 {
     [DbContext(typeof(DocsDbContext))]
-    partial class DocsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200112015243_Upload")]
+    partial class Upload
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,29 +55,6 @@ namespace Blazui.Docs.Admin.EFCore.Migrations
                     b.HasIndex("ProductVersionId");
 
                     b.ToTable("Components");
-                });
-
-            modelBuilder.Entity("Blazui.Docs.Admin.Repository.Model.ComponentGenericParameter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ComponentId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComponentId");
-
-                    b.ToTable("ComponentGenericParameter");
                 });
 
             modelBuilder.Entity("Blazui.Docs.Admin.Repository.Model.ComponentParameter", b =>
@@ -134,9 +113,6 @@ namespace Blazui.Docs.Admin.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("ChangeLog")
-                        .HasColumnType("text");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("integer");
@@ -410,15 +386,6 @@ namespace Blazui.Docs.Admin.EFCore.Migrations
                     b.HasOne("Blazui.Docs.Admin.Repository.Model.ProductVersion", null)
                         .WithMany("Components")
                         .HasForeignKey("ProductVersionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Blazui.Docs.Admin.Repository.Model.ComponentGenericParameter", b =>
-                {
-                    b.HasOne("Blazui.Docs.Admin.Repository.Model.Component", null)
-                        .WithMany("ComponentGenericParameters")
-                        .HasForeignKey("ComponentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -26,6 +26,7 @@
                             {
                                 <BDropDownItem OnClick="e=>PublishAsync(product)">发布</BDropDownItem>
                             }
+                            <BDropDownItem OnClick="e=>EditChangeLogAsync(product)">更新日志</BDropDownItem>
                             @if (CanDelete)
                             {
                                 <BDropDownItem OnClick="e=>DelAsync(product)">删除</BDropDownItem>

@@ -12,8 +12,10 @@ namespace Blazui.Docs.Admin.Repository.Model
 
         public DateTime PublishTime { get; set; }
 
+        public string ChangeLog { get; set; }
+
         public virtual ICollection<VersionChange> VersionChanges { get; set; }
-        public virtual ICollection<QuickStartStep> QueryStartSteps { get; set; }
-        public virtual ICollection<Component> Components { get; set; }
+        public virtual ICollection<QuickStartStep> QueryStartSteps { get; set; } = new List<QuickStartStep>();
+        public virtual ICollection<Component> Components { get; set; } = new List<Component>();
     }
 }

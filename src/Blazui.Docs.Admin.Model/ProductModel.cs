@@ -7,7 +7,7 @@ namespace Blazui.Docs.Admin.Model
     public class ProductModel
     {
         public int Id { get; set; }
-        [TableColumn(Text ="Nuget 包名")]
+        [TableColumn(Text = "Nuget 包名")]
         public string NugetPackageName { get; set; }
         [TableColumn(Text = "简介")]
         public string Description { get; set; }
@@ -19,5 +19,7 @@ namespace Blazui.Docs.Admin.Model
 
         [TableColumn(Text = "最新版本发布时间")]
         public DateTime? PublishDate { get; set; }
+        [TableColumn(Ignore = true)]
+        public string ChangeLog { get; set; }
     }
 }

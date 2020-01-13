@@ -49,6 +49,30 @@ namespace Blazui.Docs.Admin.Service
             }).ToList();
         }
 
+        public Task UpdateQuickStartStepAsync(UpdateQuickStartStepModel updateModel)
+        {
+            var step = quickStartStepRepository.QueryByKey(updateModel.Id);
+            if (step == null)
+            {
+                throw new OperationException("该步骤不存在");
+            }
+            step.Title = updateModel.Title;
+            step.Description = updateModel.Content;
+            return quickStartStepRepository.SaveChangesAsync();
+        }
+
+        public Task CreateQuickStartStepAsync(int productId, int productVersionId, UpdateQuickStartStepModel updateModel)
+        {
+            var steps = quickStartStepRepository.GetSteps(productVersionId);
+            return quickStartStepRepository.CreateAsync(new QuickStartStep()
+            {
+                Description = updateModel.Content,
+                ProductVersionId = productVersionId,
+                Sort = steps.Any() ? steps.Max(x => x.Sort) + 1 : 0,
+                Title = updateModel.Title
+            });
+        }
+
         public List<ProductVersion> GetProductVersions(int productId)
         {
             return productRepository.GetProductWithVersion(productId).ProductVersions.ToList();
@@ -69,6 +93,66 @@ namespace Blazui.Docs.Admin.Service
             }
             productVersion.ChangeLog = changeLog;
             return productRepository.SaveChangesAsync();
+        }
+
+        public async Task StepMoveDownAsync(int productId, int selectedVersionId, int id)
+        {
+            var steps = quickStartStepRepository.GetSteps(selectedVersionId);
+            var currentStep = steps.FirstOrDefault(x => x.Id == id);
+            if (currentStep == null)
+            {
+                throw new OperationException("当前步骤不存在");
+            }
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var currentIndex = steps.IndexOf(currentStep);
+                var newIndex = currentIndex++;
+                steps.Remove(currentStep);
+                steps.Insert(++newIndex, currentStep);
+                ResetSort(steps);
+                await quickStartStepRepository.SaveChangesAsync();
+                scope.Complete();
+            }
+        }
+
+        public async Task DeleteStepAsync(int productVersionId, int id)
+        {
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                await quickStartStepRepository.DeleteAsync(id);
+                var steps = quickStartStepRepository.GetSteps(productVersionId);
+                ResetSort(steps);
+                await quickStartStepRepository.SaveChangesAsync();
+                scope.Complete();
+            }
+        }
+
+        public async Task StepMoveUpAsync(int productId, int selectedVersionId, int id)
+        {
+            var steps = quickStartStepRepository.GetSteps(selectedVersionId);
+            var currentStep = steps.FirstOrDefault(x => x.Id == id);
+            if (currentStep == null)
+            {
+                throw new OperationException("当前步骤不存在");
+            }
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var currentIndex = steps.IndexOf(currentStep);
+                var newIndex = currentIndex--;
+                steps.Remove(currentStep);
+                steps.Insert(--newIndex, currentStep);
+                ResetSort(steps);
+                await quickStartStepRepository.SaveChangesAsync();
+                scope.Complete();
+            }
+        }
+
+        private void ResetSort(List<QuickStartStep> steps)
+        {
+            for (int i = 0; i < steps.Count; i++)
+            {
+                steps[i].Sort = i;
+            }
         }
 
         public async Task PublishAsync(PublishVersionModel versionModel)

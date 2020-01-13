@@ -1,1 +1,15 @@
 ﻿@inherits QuickStartStepEditBase
+<BForm @ref="form" Value="Step">
+    <BFormItem Name="@nameof(UpdateQuickStartStepModel.Id)" TValue="int" IsHidden="true">
+        <BInput TValue="int"></BInput>
+    </BFormItem>
+    <BFormItem Label="标题" Name="@nameof(UpdateQuickStartStepModel.Title)" IsRequired="true" TValue="string">
+        <BInput TValue="string"></BInput>
+    </BFormItem>
+    <BFormItem Label="内容" Name="@nameof(UpdateQuickStartStepModel.Content)" IsRequired="true" TValue="string">
+        <BMarkdownEditor Height="400"></BMarkdownEditor>
+    </BFormItem>
+    <BFormActionItem Style="text-align:right">
+        <BButton Type="@ButtonType.Primary" OnClick="SubmitAsync">确认</BButton>
+    </BFormActionItem>
+</BForm>

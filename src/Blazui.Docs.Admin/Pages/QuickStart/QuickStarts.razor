@@ -3,20 +3,20 @@
 @page "/docs/quickstart"
 
 <BAuthorizeView Roles="@Roles">
-    <BForm Inline="true">
-        <BFormItem TValue="int" Label="产品" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
-            <BSelect TValue="int" OnChange="ProductSelected">
+    <BForm Inline="true" @ref="form">
+        <BFormItem TValue="int?" Label="产品" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
+            <BSelect TValue="int?" OnChange="ProductSelected">
                 @foreach (var product in Products)
                 {
-                    <BSelectOption @key="product.Id" Value="product.Id" Text="@product.NugetPackageName"></BSelectOption>
+                    <BSelectOption @key="product.Id" TValue="int?" Value="product.Id" Text="@product.NugetPackageName"></BSelectOption>
                 }
             </BSelect>
         </BFormItem>
-        <BFormItem TValue="int" Label="版本" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
-            <BSelect TValue="int" @bind-Value="SelectedVersionId">
+        <BFormItem TValue="int?" Label="版本" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
+            <BSelect TValue="int?" @bind-Value="SelectedVersionId">
                 @foreach (var verion in Versions)
                 {
-                    <BSelectOption @key="verion.Key" Value="verion.Key" Text="@verion.Value"></BSelectOption>
+                    <BSelectOption @key="verion.Key" TValue="int?" Value="verion.Key" Text="@verion.Value"></BSelectOption>
                 }
             </BSelect>
         </BFormItem>
@@ -25,15 +25,21 @@
             <BButton Type="@ButtonType.Primary" OnClick="CreateAsync" IsDisabled="!CanCreate">新建</BButton>
         </BFormActionItem>
     </BForm>
-    <BTable DataSource="Steps">
+    <BTable DataSource="Steps" @ref="table">
         <BTableColumns>
             @if (CanUpdate)
             {
                 <BTableTemplateColumn Context="step" Text="操作">
-                    <BButton Icon="el-icon-arrow-up"></BButton>
-                    <BButton Icon="el-icon-arrow-down"></BButton>
-                    <BButton Icon="el-icon-edit"></BButton>
-                    <BButton Icon="el-icon-delete"></BButton>
+                    @if (Steps.IndexOf((QuickStartStepModel)step) != 0)
+                    {
+                        <BButton Icon="el-icon-arrow-up" Size="@ButtonSize.Mini" OnClick="e=>MoveUpAsync(step)"></BButton>
+                    }
+                    @if (Steps.IndexOf((QuickStartStepModel)step) != Steps.Count - 1)
+                    {
+                        <BButton Icon="el-icon-arrow-down" Size="@ButtonSize.Mini" OnClick="e=>MoveDownAsync(step)"></BButton>
+                    }
+                    <BButton Icon="el-icon-edit" Size="@ButtonSize.Mini" OnClick="e=>EditAsync(step)"></BButton>
+                    <BButton Icon="el-icon-delete" Size="@ButtonSize.Mini" Type="@ButtonType.Danger" OnClick="e=>DeleteAsync(step)"></BButton>
                 </BTableTemplateColumn>
             }
         </BTableColumns>

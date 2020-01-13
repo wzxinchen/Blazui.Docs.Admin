@@ -30,15 +30,15 @@ namespace Blazui.Docs.Admin.Repository.EFCore
             return DbContext.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(object key)
+        public Task<int> DeleteAsync(object key)
         {
             var entity = DbContext.Set<T>().Find(key);
             if (entity == null)
             {
-                return 0;
+                return Task.FromResult(0);
             }
             DbContext.Set<T>().Remove(entity);
-            return await DbContext.SaveChangesAsync();
+            return DbContext.SaveChangesAsync();
         }
 
         public List<T> QueryAll()

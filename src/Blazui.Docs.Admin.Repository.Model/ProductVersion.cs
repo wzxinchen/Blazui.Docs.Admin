@@ -12,6 +12,8 @@ namespace Blazui.Docs.Admin.Repository.Model
 
         public DateTime PublishTime { get; set; }
 
+        public bool IsPublish { get; set; }
+
         public string ChangeLog { get; set; }
 
         public virtual ICollection<VersionChange> VersionChanges { get; set; }

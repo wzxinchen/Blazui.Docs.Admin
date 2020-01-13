@@ -155,7 +155,7 @@ namespace Blazui.Docs.Admin.Service
             }
         }
 
-        public async Task PublishAsync(PublishVersionModel versionModel)
+        public async Task PrePublishAsync(PublishVersionModel versionModel)
         {
             try
             {
@@ -201,7 +201,7 @@ namespace Blazui.Docs.Admin.Service
             }
             else
             {
-                var prevVersion = product.ProductVersions.FirstOrDefault(x => x.Id < productVersion.Id);
+                var prevVersion = product.ProductVersions.OrderByDescending(x => x.Id).FirstOrDefault(x => x.Id < productVersion.Id);
                 productVersion.Components.Clear();
                 if (prevVersion != null)
                 {

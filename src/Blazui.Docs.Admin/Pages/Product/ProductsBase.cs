@@ -62,7 +62,7 @@ namespace Blazui.Docs.Admin.Pages.Product
             RequireRender = true;
         }
 
-        protected async Task PublishAsync(object product)
+        protected async Task PrePublishAsync(object product)
         {
             var productModel = product as ProductModel;
             var parameters = new Dictionary<string, object>();

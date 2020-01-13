@@ -32,7 +32,7 @@ namespace Blazui.Docs.Admin.Pages.Product
 
             var versionModel = form.GetValue<PublishVersionModel>();
             versionModel.ProductId = ProductId;
-            await ProductService.PublishAsync(versionModel);
+            await ProductService.PrePublishAsync(versionModel);
             _ = Dialog.CloseDialogAsync();
         }
     }

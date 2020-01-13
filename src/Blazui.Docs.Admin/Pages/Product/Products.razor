@@ -24,7 +24,7 @@
                             }
                             @if (CanPublish)
                             {
-                                <BDropDownItem OnClick="e=>PublishAsync(product)">发布</BDropDownItem>
+                                <BDropDownItem OnClick="e=>PrePublishAsync(product)">预发布</BDropDownItem>
                             }
                             <BDropDownItem OnClick="e=>EditChangeLogAsync(product)">更新日志</BDropDownItem>
                             @if (CanDelete)

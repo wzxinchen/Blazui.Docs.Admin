@@ -21,5 +21,7 @@ namespace Blazui.Docs.Admin.Model
         public DateTime? PublishDate { get; set; }
         [TableColumn(Ignore = true)]
         public string ChangeLog { get; set; }
+        [TableColumn(Ignore = true)]
+        public string Introduction { get; set; }
     }
 }

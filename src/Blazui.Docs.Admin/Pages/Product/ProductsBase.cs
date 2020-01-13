@@ -71,6 +71,20 @@ namespace Blazui.Docs.Admin.Pages.Product
             RefreshProducts();
         }
 
+        protected async Task PublishAsync(object product)
+        {
+            var productModel = product as ProductModel;
+            try
+            {
+                await productService.PublishAsync(productModel.Id);
+                RefreshProducts();
+            }
+            catch (OperationException oe)
+            {
+                Alert(oe.Message);
+            }
+        }
+
         private void RefreshProducts()
         {
             if (table == null)
@@ -102,6 +116,13 @@ namespace Blazui.Docs.Admin.Pages.Product
             RefreshProducts();
         }
 
+        protected async Task EditIntroductionAsync(object product)
+        {
+            var parameters = new Dictionary<string, object>();
+            parameters.Add(nameof(Introduction.Product), product);
+            await DialogService.ShowDialogAsync<Introduction>("更新产品介绍", 800, parameters);
+            RefreshProducts();
+        }
 
         protected async Task CreateAsync()
         {

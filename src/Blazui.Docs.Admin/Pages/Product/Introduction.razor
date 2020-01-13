@@ -1,10 +1,10 @@
-﻿@inherits ChangeLogBase
+﻿@inherits IntroductionBase
 <BForm>
     <BFormItem TValue="string">
-        <BMarkdownEditor @bind-Value="@Product.ChangeLog"></BMarkdownEditor>
+        <BMarkdownEditor @bind-Value="@Product.Introduction"></BMarkdownEditor>
     </BFormItem>
     <BFormActionItem Style="text-align:right">
-        <BButton Type="@ButtonType.Primary" IsDisabled="!CanUpdate" OnClick="SaveChangeLogAsync">
+        <BButton Type="@ButtonType.Primary" IsDisabled="!CanUpdate" OnClick="SaveIntroductionAsync">
             @if (CanUpdate)
             {
                 @("保存");

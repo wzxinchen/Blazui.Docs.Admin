@@ -10,6 +10,7 @@ namespace Blazui.Docs.Admin.Repository.Model
         public string NugetPackageName { get; set; }
         public string Description { get; set; }
         public string GitHub { get; set; }
+        public string Introduction { get; set; }
         public virtual ICollection<VersionChange> VersionChanges { get; set; }
         public virtual ICollection<ProductVersion> ProductVersions { get; set; }
     }

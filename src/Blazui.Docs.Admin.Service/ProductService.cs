@@ -29,6 +29,18 @@ namespace Blazui.Docs.Admin.Service
             this.productRepository = productRepository;
             this.quickStartStepRepository = quickStartStepRepository;
         }
+
+        public Task UpdateIntroductionAsync(int id, string introduction)
+        {
+            var product = productRepository.QueryByKey(id);
+            if (product == null)
+            {
+                throw new OperationException("产品不存在");
+            }
+            product.Introduction = introduction;
+            return productRepository.SaveChangesAsync();
+        }
+
         public List<ProductModel> GetProducts()
         {
             var products = productRepository.GetProductsWithVersion();
@@ -39,7 +51,8 @@ namespace Blazui.Docs.Admin.Service
                     Description = x.Description,
                     GitHub = x.GitHub,
                     Id = x.Id,
-                    NugetPackageName = x.NugetPackageName
+                    NugetPackageName = x.NugetPackageName,
+                    Introduction = x.Introduction
                 };
                 var latestVersion = x.ProductVersions.OrderByDescending(x => x.PublishTime).FirstOrDefault();
                 productModel.Version = latestVersion?.Version;
@@ -71,6 +84,21 @@ namespace Blazui.Docs.Admin.Service
                 Sort = steps.Any() ? steps.Max(x => x.Sort) + 1 : 0,
                 Title = updateModel.Title
             });
+        }
+
+        public Task PublishAsync(int id)
+        {
+            var preVersion = productRepository.GetProductWithVersion(id).ProductVersions.OrderByDescending(x => x.Id).FirstOrDefault();
+            if (preVersion == null)
+            {
+                throw new OperationException("没有任何版本");
+            }
+            if (preVersion.IsPublish)
+            {
+                throw new OperationException("最新版本已发布，不能再次发布");
+            }
+            preVersion.IsPublish = true;
+            return productRepository.SaveChangesAsync();
         }
 
         public List<ProductVersion> GetProductVersions(int productId)

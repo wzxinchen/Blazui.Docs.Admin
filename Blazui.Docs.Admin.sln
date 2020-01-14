@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.Repositor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Markdown", "..\Blazui.Markdown\src\Blazui.Markdown\Blazui.Markdown.csproj", "{E156CACA-D410-423A-9217-8E4A8E14417B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazui.Docs.Service", "src\Blazui.Docs.Service\Blazui.Docs.Service.csproj", "{64841372-8C87-47BA-8129-9AED4D08182D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{E156CACA-D410-423A-9217-8E4A8E14417B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E156CACA-D410-423A-9217-8E4A8E14417B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E156CACA-D410-423A-9217-8E4A8E14417B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64841372-8C87-47BA-8129-9AED4D08182D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64841372-8C87-47BA-8129-9AED4D08182D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64841372-8C87-47BA-8129-9AED4D08182D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64841372-8C87-47BA-8129-9AED4D08182D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{AF19D56B-5C99-41A0-8B7E-EFD2E8B569F4} = {6D62CFA8-2F54-45F0-98EF-6DC1434A857E}
 		{6CA6EC6E-BE59-4377-A31E-8988E1DDFA95} = {6D62CFA8-2F54-45F0-98EF-6DC1434A857E}
 		{E156CACA-D410-423A-9217-8E4A8E14417B} = {21293176-5D9C-424D-87A3-46857D24C742}
+		{64841372-8C87-47BA-8129-9AED4D08182D} = {6D62CFA8-2F54-45F0-98EF-6DC1434A857E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C33618B5-DFE5-4465-B8B8-17D50602D257}

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>3ca0627c-fc84-4149-87e1-b748e9459d84</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blazui.Docs.Admin.EFCore\Blazui.Docs.Admin.Repository.EFCore.csproj" />
+    <ProjectReference Include="..\Blazui.Docs.Admin.Model\Blazui.Docs.Admin.Model.csproj" />
+    <ProjectReference Include="..\Blazui.Docs.Admin.Service\Blazui.Docs.Admin.Service.csproj" />
+  </ItemGroup>
+
+
+</Project>

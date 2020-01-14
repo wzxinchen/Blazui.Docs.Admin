@@ -13,11 +13,6 @@ namespace Blazui.Docs.Service.Controllers
     [Route("api/[controller]s")]
     public class ProductController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<ProductController> _logger;
         private readonly ProductService productService;
 
@@ -42,6 +37,18 @@ namespace Blazui.Docs.Service.Controllers
                 Id = x.Id,
                 Version = x.Version
             });
+        }
+
+        [HttpGet]
+        [Route("{productId}/versions/{versionId}/quickstarts")]
+        public IActionResult GetVersions(int productId, int versionId)
+        {
+            return Ok(productService.GetProductQuickStartSteps(versionId).Select(x => new QuickStartStepModel()
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Description = x.Description
+            }));
         }
     }
 }

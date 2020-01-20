@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExportedMethod.cs" />
+    <Compile Remove="ExportedMethodGenericParameter.cs" />
+    <Compile Remove="ExportedMethodParameter.cs" />
+    <Compile Remove="ExportedMethodReturnType.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Blazui.Docs.Admin.Enum\Blazui.Docs.Admin.Enum.csproj" />
   </ItemGroup>
 

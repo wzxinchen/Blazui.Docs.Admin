@@ -39,6 +39,7 @@ namespace Blazui.Docs.Service
             services.AddScoped<ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IQuickStartStepRepository, QuickStartStepRepository>();
+            services.AddScoped<IComponentRepository, ComponentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

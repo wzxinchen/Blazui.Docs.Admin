@@ -50,5 +50,16 @@ namespace Blazui.Docs.Service.Controllers
                 Description = x.Description
             }));
         }
+
+        [HttpGet]
+        [Route("{productId}/versions/{versionId}/components")]
+        public IActionResult GetComponents(int productId, int versionId)
+        {
+            return Ok(productService.GetComponents(versionId).Select(x => new ComponentModel()
+            {
+                Name = x.Name,
+                TagName = x.TagName
+            }));
+        }
     }
 }

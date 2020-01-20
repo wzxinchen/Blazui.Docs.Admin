@@ -39,5 +39,8 @@ namespace Blazui.Docs.Admin.EFCore
         public virtual DbSet<VersionChange> VersionChanges { get; set; }
         public virtual DbSet<Repository.Model.Component> Components { get; set; }
         public virtual DbSet<ComponentParameter> ComponentParameters { get; set; }
+        public virtual DbSet<ExportedType> ExportedTypes { get; set; }
+        public virtual DbSet<ExportedProperty> ExportedProperties { get; set; }
+        public virtual DbSet<ExportedTypeGenericParameter> ExportedTypeGenericParameters { get; set; }
     }
 }

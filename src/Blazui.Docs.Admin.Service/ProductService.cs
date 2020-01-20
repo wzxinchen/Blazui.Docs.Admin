@@ -23,11 +23,13 @@ namespace Blazui.Docs.Admin.Service
     {
         private readonly IProductRepository productRepository;
         private readonly IQuickStartStepRepository quickStartStepRepository;
+        private readonly IComponentRepository componentRepository;
 
-        public ProductService(IProductRepository productRepository, IQuickStartStepRepository quickStartStepRepository)
+        public ProductService(IProductRepository productRepository, IQuickStartStepRepository quickStartStepRepository, IComponentRepository componentRepository)
         {
             this.productRepository = productRepository;
             this.quickStartStepRepository = quickStartStepRepository;
+            this.componentRepository = componentRepository;
         }
 
         public Task UpdateIntroductionAsync(int id, string introduction)
@@ -60,6 +62,11 @@ namespace Blazui.Docs.Admin.Service
                 productModel.ChangeLog = latestVersion?.ChangeLog;
                 return productModel;
             }).ToList();
+        }
+
+        public IEnumerable<Repository.Model.Component> GetComponents(int versionId)
+        {
+            return componentRepository.GetComponentsOfVersion(versionId);
         }
 
         public Task UpdateQuickStartStepAsync(UpdateQuickStartStepModel updateModel)
@@ -217,7 +224,7 @@ namespace Blazui.Docs.Admin.Service
             var productVersion = product.ProductVersions.FirstOrDefault(x => x.Version.Equals(versionModel.Version, StringComparison.CurrentCultureIgnoreCase));
             if (productVersion == null)
             {
-                productVersion = new Repository.Model.ProductVersion()
+                productVersion = new ProductVersion()
                 {
                     PublishTime = DateTime.Now,
                     Version = versionModel.Version,
@@ -259,29 +266,27 @@ namespace Blazui.Docs.Admin.Service
                 var members = doc.SelectNodes("/doc/members/member")
                     .OfType<XmlNode>()
                     .ToDictionary(x => x.Attributes["name"].Value, x => x.SelectSingleNode("summary").InnerText?.Trim());
-                var componentTypes = Assembly.LoadFile(file).GetExportedTypes().Where(x => x.IsPublic)
-                    .Where(x => typeof(ComponentBase).IsAssignableFrom(x))
-                    .Where(x => x != typeof(ComponentBase))
+                var types = Assembly.LoadFile(file).GetExportedTypes().Where(x => x.IsPublic)
                     .ToList();
-                foreach (var componentType in componentTypes)
+                foreach (var type in types)
                 {
-                    var componentName = GetClassSummary(members, componentType);
-                    var tagName = Regex.Replace(componentType.Name, @"\`\d+", string.Empty);
-                    var component = new Repository.Model.Component()
+                    var typeDescription = GetClassSummary(members, type);
+                    var tagName = Regex.Replace(type.Name, @"\`\d+", string.Empty);
+                    var exportedType = new ExportedType
                     {
-                        Name = componentName ?? tagName,
-                        TagName = tagName,
-                        ProductVersionId = productVersion.Id
+                        Description = typeDescription,
+                        Name = type.Name,
+                        Namespace = type.Namespace
                     };
-                    if (componentType.IsGenericType)
+                    if (type.IsGenericType)
                     {
-                        component.ComponentGenericParameters = componentType.GetGenericArguments().Select(x => new ComponentGenericParameter()
+                        exportedType.GenericParameters = type.GetGenericArguments().Select(x => new ExportedTypeGenericParameter()
                         {
                             Name = Regex.Replace(x.Name, @"\`\d+", string.Empty)
                         }).ToList();
                     }
                     productVersion.Components.Add(component);
-                    InitilizeParameters(componentType, component, members);
+                    InitilizeParameters(type, component, members);
                 }
             }
         }

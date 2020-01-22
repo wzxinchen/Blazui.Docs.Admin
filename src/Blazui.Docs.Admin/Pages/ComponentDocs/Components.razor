@@ -1,0 +1,35 @@
+﻿@inherits ComponentsBase
+@page "/docs/component"
+@attribute [Resource("componentlist", "组件列表")]
+<BAuthorizeView Roles="@Roles">
+    <BForm Inline="true" @ref="form">
+        <BFormItem TValue="int?" Label="产品" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
+            <BSelect TValue="int?" OnChange="ProductSelected">
+                @foreach (var product in Products)
+                {
+                    <BSelectOption @key="product.Id" TValue="int?" Value="product.Id" Text="@product.NugetPackageName"></BSelectOption>
+                }
+            </BSelect>
+        </BFormItem>
+        <BFormItem TValue="int?" Label="版本" IsRequired="true" Name="@nameof(SearchQuickStartModel.ProductId)">
+            <BSelect TValue="int?" @bind-Value="SelectedVersionId">
+                @foreach (var verion in Versions)
+                {
+                    <BSelectOption @key="verion.Key" TValue="int?" Value="verion.Key" Text="@verion.Value"></BSelectOption>
+                }
+            </BSelect>
+        </BFormItem>
+        <BFormActionItem>
+            <BButton Type="@ButtonType.Primary" OnClick="Query">查询</BButton>
+            <BButton Type="@ButtonType.Primary" OnClick="CreateAsync">新建</BButton>
+        </BFormActionItem>
+    </BForm>
+    <BTable DataSource="Components" @ref="table" EmptyMessage="@EmptyMessage">
+        <BTableColumns>
+            <BTableTemplateColumn Context="step" Text="操作">
+                <BButton Icon="el-icon-edit" Size="@ButtonSize.Mini" OnClick="e=>EditAsync(step)"></BButton>
+                <BButton Icon="el-icon-delete" Size="@ButtonSize.Mini" Type="@ButtonType.Danger" OnClick="e=>DeleteAsync(step)"></BButton>
+            </BTableTemplateColumn>
+        </BTableColumns>
+    </BTable>
+</BAuthorizeView>

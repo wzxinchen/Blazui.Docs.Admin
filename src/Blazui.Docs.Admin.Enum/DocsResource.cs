@@ -25,6 +25,12 @@ namespace Blazui.Docs.Admin.Enum
         DeleteProduct,
 
         [Description("发布产品")]
-        PublishProduct
+        PublishProduct,
+        [Description("更新组件")]
+        UpdateComponent,
+        [Description("创建组件")]
+        CreateComponent,
+        [Description("删除组件")]
+        DeleteComponent
     }
 }

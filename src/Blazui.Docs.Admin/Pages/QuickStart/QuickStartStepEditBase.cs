@@ -1,5 +1,5 @@
 ﻿using BlazAdmin;
-using Blazui.Component.Form;
+using Blazui.Component;
 using Blazui.Docs.Admin.Model;
 using Blazui.Docs.Admin.Service;
 using Microsoft.AspNetCore.Components;

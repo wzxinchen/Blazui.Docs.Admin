@@ -30,6 +30,7 @@ namespace Blazui.Docs.Admin.EFCore
             base.OnModelCreating(builder);
             builder.Entity<RoleResource>()
                 .HasKey(x => new { x.RoleId, x.ResourceId });
+
         }
 
         public virtual DbSet<RoleResource> RoleResources { get; set; }
@@ -42,5 +43,6 @@ namespace Blazui.Docs.Admin.EFCore
         public virtual DbSet<ExportedType> ExportedTypes { get; set; }
         public virtual DbSet<ExportedProperty> ExportedProperties { get; set; }
         public virtual DbSet<ExportedTypeGenericParameter> ExportedTypeGenericParameters { get; set; }
+        public virtual DbSet<ComponentVersion> ComponentVersions { get; set; }
     }
 }

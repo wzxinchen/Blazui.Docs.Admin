@@ -18,6 +18,7 @@ namespace Blazui.Docs.Admin.Repository.Model
 
         public virtual ICollection<VersionChange> VersionChanges { get; set; }
         public virtual ICollection<QuickStartStep> QueryStartSteps { get; set; } = new List<QuickStartStep>();
-        public virtual ICollection<Component> Components { get; set; } = new List<Component>();
+        public virtual ICollection<ComponentVersion> ComponentVersions { get; set; } = new List<ComponentVersion>();
+        public virtual ICollection<ExportedType> ExportedTypes { get; set; } = new List<ExportedType>();
     }
 }

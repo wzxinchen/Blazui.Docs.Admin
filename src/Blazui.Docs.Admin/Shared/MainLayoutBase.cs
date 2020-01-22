@@ -30,6 +30,11 @@ namespace Blazui.Docs.Admin.Shared
                          Label="入门文档",
                          Icon="el-icon-s-promotion",
                          Route="/docs/quickstart"
+                    },
+                    new MenuModel(){
+                         Label="组件文档",
+                         Icon="el-icon-s-management",
+                         Route="/docs/component"
                     }
                 }
             }); ;

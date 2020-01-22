@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Admin.Repositor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Markdown", "..\Blazui.Markdown\src\Blazui.Markdown\Blazui.Markdown.csproj", "{E156CACA-D410-423A-9217-8E4A8E14417B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazui.Docs.Service", "src\Blazui.Docs.Service\Blazui.Docs.Service.csproj", "{64841372-8C87-47BA-8129-9AED4D08182D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazui.Docs.Service", "src\Blazui.Docs.Service\Blazui.Docs.Service.csproj", "{64841372-8C87-47BA-8129-9AED4D08182D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

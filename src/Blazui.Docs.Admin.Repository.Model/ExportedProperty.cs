@@ -9,10 +9,17 @@ namespace Blazui.Docs.Admin.Repository.Model
         public int Id { get; set; }
 
         public string Name { get; set; }
-        public int PropertyTypeId { get; set; }
+        public string PropertyType { get; set; }
         public bool IsComponentParameter { get; set; }
         public bool IsComponentCascadingParameter { get; set; }
-        public ExportedType PropertyType { get; set; }
         public string Description { get; set; }
+        public int ExportedTypeId { get; set; }
+
+        public virtual ExportedType ExportedType { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using BlazAdmin;
 using Blazui.Component;
 using Blazui.Component.EventArgs;
-using Blazui.Component.Form;
+using Blazui.Component;
 using Blazui.Component.Select;
-using Blazui.Component.Table;
+using Blazui.Component;
 using Blazui.Docs.Admin.Enum;
 using Blazui.Docs.Admin.Model;
 using Blazui.Docs.Admin.Repository.Model;

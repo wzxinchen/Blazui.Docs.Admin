@@ -1,0 +1,20 @@
+﻿@inherits ComponentEditBase
+<BForm EnableAlwaysRender="true" Value="Component" @ref="form">
+    <BFormItem TValue="string" Label="名称" Name="@nameof(ComponentEditModel.Name)" IsRequired="true">
+        <BInput TValue="string"></BInput>
+    </BFormItem>
+    <BFormItem TValue="string" Label="调用标签" Name="@nameof(ComponentEditModel.TagName)" IsRequired="true">
+        <BInput TValue="string"></BInput>
+    </BFormItem>
+    <BFormItem TValue="string" Label="简介" Name="@nameof(ComponentEditModel.Description)" IsRequired="true">
+        <BInput TValue="string"></BInput>
+    </BFormItem>
+    <BFormItem TValue="List<string>" Label="关联类型" Name="@nameof(ComponentEditModel.ExportedTypeIds)" EnableAlwaysRender="true" IsRequired="true">
+        <BTransfer EnableSearch="true" LeftTitle="所有类型" RightTitle="关联类型" List1="AllExportedTypes" EnableAlwaysRender="true" @ref="transfer"></BTransfer>
+    </BFormItem>
+    <BFormActionItem Style="text-align:right" EnableAlwaysRender="true">
+        <BButton Type="@ButtonType.Primary" IsDisabled="ButtonDisabled" OnClick="SubmitAsync">
+            @ButtonText
+        </BButton>
+    </BFormActionItem>
+</BForm>

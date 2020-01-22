@@ -26,8 +26,13 @@ namespace Blazui.Docs.Admin.Repository.EFCore
         public Task<Product> GetFullProductAsync(int id)
         {
             return Query.Include(x => x.ProductVersions)
-                .ThenInclude(x => x.Components)
-                .ThenInclude(x => x.ComponentParameters)
+                .ThenInclude(x => x.ComponentVersions)
+                .Include(x => x.ProductVersions)
+                .ThenInclude(x => x.ExportedTypes)
+                .ThenInclude(x => x.GenericParameters)
+                .Include(x => x.ProductVersions)
+                .ThenInclude(x => x.ExportedTypes)
+                .ThenInclude(x => x.Properties)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
 

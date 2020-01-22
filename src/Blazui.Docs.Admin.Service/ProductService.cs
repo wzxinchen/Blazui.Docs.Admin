@@ -66,7 +66,7 @@ namespace Blazui.Docs.Admin.Service
 
         public IEnumerable<Repository.Model.Component> GetComponents(int versionId)
         {
-            return componentRepository.GetComponentsOfVersion(versionId);
+            return componentRepository.GetComponents(versionId);
         }
 
         public Task UpdateQuickStartStepAsync(UpdateQuickStartStepModel updateModel)
@@ -207,8 +207,27 @@ namespace Blazui.Docs.Admin.Service
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     var productVersion = await InitilizeVersionAsync(product, versionModel);
+                    var oldComponents = productVersion.ComponentVersions.Select(x => new Repository.Model.Component()
+                    {
+                        ExportedTypes = x.Component.ExportedTypes
+                    }).ToList();
                     var files = Directory.GetFiles(directory, "*.dll");
                     InitilizeAssemblies(productVersion, files);
+                    var newExportedTypes = productVersion.ComponentVersions.SelectMany(x => x.Component.ExportedTypes).ToList();
+                    foreach (var oldComponent in oldComponents)
+                    {
+                        var newComponent = productVersion.ComponentVersions.FirstOrDefault(x => x.Component.Id == oldComponent.Id)?.Component;
+                        if (newComponent == null)
+                        {
+                            continue;
+                        }
+                        foreach (var oldExportedType in oldComponent.ExportedTypes)
+                        {
+                            var newExportedType = newComponent.ExportedTypes.Where(x => x.Name == oldExportedType.Name)
+                                .FirstOrDefault(x => x.Namespace == oldExportedType.Namespace);
+                            newExportedType.Component = newComponent;
+                        }
+                    }
                     await productRepository.SaveChangesAsync();
                     scope.Complete();
                 }
@@ -231,21 +250,19 @@ namespace Blazui.Docs.Admin.Service
                     ChangeLog = versionModel.ChangeLog
                 };
                 product.ProductVersions.Add(productVersion);
-                productVersion.Components.Clear();
                 await productRepository.SaveChangesAsync();
             }
             else
             {
                 var prevVersion = product.ProductVersions.OrderByDescending(x => x.Id).FirstOrDefault(x => x.Id < productVersion.Id);
-                productVersion.Components.Clear();
+                productVersion.ExportedTypes.Clear();
                 if (prevVersion != null)
                 {
-                    productVersion.QueryStartSteps = prevVersion.QueryStartSteps.Select(x => new QuickStartStep()
+                    productVersion.QueryStartSteps = prevVersion.QueryStartSteps.ToList();
+                    productVersion.ComponentVersions = prevVersion.ComponentVersions.Select(x => new ComponentVersion()
                     {
-                        Description = x.Description,
-                        ProductVersionId = x.ProductVersionId,
-                        Sort = x.Sort,
-                        Title = x.Title
+                        Component = x.Component,
+                        ProductVersion = productVersion
                     }).ToList();
                 }
                 productVersion.ChangeLog = versionModel.ChangeLog;
@@ -271,22 +288,24 @@ namespace Blazui.Docs.Admin.Service
                 foreach (var type in types)
                 {
                     var typeDescription = GetClassSummary(members, type);
-                    var tagName = Regex.Replace(type.Name, @"\`\d+", string.Empty);
                     var exportedType = new ExportedType
                     {
                         Description = typeDescription,
-                        Name = type.Name,
+                        Name = Regex.Replace(type.Name, @"\`\d+", string.Empty),
                         Namespace = type.Namespace
                     };
                     if (type.IsGenericType)
                     {
+                        exportedType.IsGeneric = true;
                         exportedType.GenericParameters = type.GetGenericArguments().Select(x => new ExportedTypeGenericParameter()
                         {
-                            Name = Regex.Replace(x.Name, @"\`\d+", string.Empty)
+                            Name = Regex.Replace(x.Name, @"\`\d+", string.Empty),
+                            Description = GetClassSummary(members, x),
+                            ExportedType = exportedType
                         }).ToList();
                     }
-                    productVersion.Components.Add(component);
-                    InitilizeParameters(type, component, members);
+                    productVersion.ExportedTypes.Add(exportedType);
+                    InitilizeTypes(type, exportedType, members);
                 }
             }
         }
@@ -335,36 +354,36 @@ namespace Blazui.Docs.Admin.Service
             return builder.ToString();
         }
 
-        private void InitilizeParameters(Type componentType, Repository.Model.Component component, IDictionary<string, string> members)
+        private void InitilizeTypes(Type type, ExportedType exportedType, IDictionary<string, string> members)
         {
-            var properties = componentType.GetProperties();
+            var properties = type.GetProperties();
             foreach (var property in properties)
             {
                 var parameterAttribute = property.GetCustomAttribute<ParameterAttribute>();
-                if (parameterAttribute != null)
-                {
-                    var componentParameter = new ComponentParameter()
-                    {
-                        IsCascading = false,
-                        PropertyName = property.Name,
-                        TypeName = property.PropertyType.FullName,
-                        Description = GetPropertySummary(members, property)
-                    };
-                    component.ComponentParameters.Add(componentParameter);
-                    continue;
-                }
                 var cascadingParameterAttribute = property.GetCustomAttribute<CascadingParameterAttribute>();
-                if (cascadingParameterAttribute != null)
+                var exportedProperty = new ExportedProperty()
                 {
-                    var componentParameter = new ComponentParameter()
-                    {
-                        IsCascading = false,
-                        PropertyName = property.Name,
-                        TypeName = property.PropertyType.FullName,
-                        Description = GetPropertySummary(members, property)
-                    };
-                    component.ComponentParameters.Add(componentParameter);
-                }
+                    Description = GetPropertySummary(members, property),
+                    IsComponentCascadingParameter = cascadingParameterAttribute != null,
+                    IsComponentParameter = parameterAttribute != null,
+                    Name = Regex.Replace(property.Name, @"`\d+", string.Empty),
+                    PropertyType = property.PropertyType.Name
+                };
+                exportedType.Properties.Add(exportedProperty);
+            }
+            if (!type.IsGenericType)
+            {
+                return;
+            }
+            var genericArgs = type.GetGenericArguments();
+            foreach (var genericArg in genericArgs)
+            {
+                var exportedTypeGenericParameter = new ExportedTypeGenericParameter()
+                {
+                    ExportedType = exportedType,
+                    Name = genericArg.Name
+                };
+                exportedType.GenericParameters.Add(exportedTypeGenericParameter);
             }
         }
 

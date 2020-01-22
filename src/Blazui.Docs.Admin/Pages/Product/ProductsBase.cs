@@ -1,6 +1,6 @@
 ﻿using BlazAdmin;
 using Blazui.Component;
-using Blazui.Component.Table;
+using Blazui.Component;
 using Blazui.Docs.Admin.Enum;
 using Blazui.Docs.Admin.Model;
 using Blazui.Docs.Admin.Service;
